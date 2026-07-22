@@ -378,7 +378,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="text"
-                      value={personalForm.name}
+                      value={personalForm.name || ''}
                       onChange={(e) => setPersonalForm({ ...personalForm, name: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
@@ -391,8 +391,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="text"
-                      value={personalForm.title}
-                      onChange={(e) => setPersonalForm({ ...personalForm, title: e.target.value })}
+                      value={personalForm.role || ''}
+                      onChange={(e) => setPersonalForm({ ...personalForm, role: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
                     />
@@ -404,7 +404,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="email"
-                      value={personalForm.email}
+                      value={personalForm.email || ''}
                       onChange={(e) => setPersonalForm({ ...personalForm, email: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
@@ -417,7 +417,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="text"
-                      value={personalForm.phone}
+                      value={personalForm.phone || ''}
                       onChange={(e) => setPersonalForm({ ...personalForm, phone: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
@@ -430,7 +430,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="text"
-                      value={personalForm.location}
+                      value={personalForm.location || ''}
                       onChange={(e) => setPersonalForm({ ...personalForm, location: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
@@ -443,7 +443,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </label>
                     <input
                       type="text"
-                      value={personalForm.status}
+                      value={personalForm.status || ''}
                       onChange={(e) => setPersonalForm({ ...personalForm, status: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
