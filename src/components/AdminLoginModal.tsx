@@ -104,17 +104,9 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
             </div>
           )}
 
-          <div className="p-3 bg-emerald-50/80 dark:bg-emerald-950/30 rounded-xl border border-emerald-200/60 dark:border-emerald-900/40 text-xs text-emerald-800 dark:text-emerald-300 flex items-start gap-2">
-            <KeyRound className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
-            <div>
-              <span className="font-semibold">Sandi Default: </span>
-              <code className="bg-emerald-100 dark:bg-emerald-900/80 px-1.5 py-0.5 rounded font-mono text-emerald-900 dark:text-emerald-200 font-bold">
-                admin123
-              </code>
-              <p className="mt-0.5 text-[11px] opacity-90">
-                (Anda dapat mengubah password ini di dalam Panel Admin)
-              </p>
-            </div>
+          <div className="p-3 bg-slate-100/80 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
+            <KeyRound className="w-4 h-4 shrink-0 text-slate-500 dark:text-slate-400" />
+            <span>Area terbatas. Hanya untuk administrator web yang terotorisasi.</span>
           </div>
 
           <div className="pt-2 flex items-center gap-3">

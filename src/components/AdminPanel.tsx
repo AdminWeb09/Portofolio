@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   X, Save, RotateCcw, Plus, Trash2, Edit3, User, Cpu, Briefcase, 
   Layers, MessageSquare, HelpCircle, Lock, LogOut, CheckCircle2, 
-  ExternalLink, Sparkles, AlertTriangle
+  ExternalLink, Sparkles, AlertTriangle, Upload
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { SkillItem, ProjectItem, ExperienceItem, TestimonialItem } from '../types/portfolio';
@@ -59,6 +59,42 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file foto terlalu besar. Maksimal 5MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setPersonalForm(prev => ({ ...prev, avatarUrl: event.target!.result as string }));
+          showToast('Foto profil berhasil diunggah!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleProjectImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file gambar terlalu besar. Maksimal 5MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setProjForm(prev => ({ ...prev, image: event.target!.result as string }));
+          showToast('Gambar proyek berhasil diunggah!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Handlers for Personal Info
@@ -364,16 +400,50 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                    URL Foto Profil / Avatar
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    Foto Profil / Avatar
                   </label>
-                  <input
-                    type="text"
-                    value={personalForm.avatarUrl}
-                    onChange={(e) => setPersonalForm({ ...personalForm, avatarUrl: e.target.value })}
-                    required
-                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono text-xs"
-                  />
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-5">
+                    <div className="relative shrink-0">
+                      <img
+                        src={personalForm.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'}
+                        alt="Preview Foto Profil"
+                        className="w-20 h-20 rounded-full object-cover ring-4 ring-emerald-500/30 shadow-md"
+                      />
+                    </div>
+
+                    <div className="flex-1 text-center sm:text-left space-y-2">
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        Unggah Foto dari Perangkat (Manual)
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        Pilih file gambar langsung dari galeri HP atau komputer Anda.
+                      </p>
+
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                        <label className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-sm flex items-center gap-2">
+                          <Upload className="w-4 h-4" />
+                          <span>Pilih & Unggah File Foto</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarFileChange}
+                            className="hidden"
+                          />
+                        </label>
+
+                        {personalForm.avatarUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setPersonalForm({ ...personalForm, avatarUrl: '' })}
+                            className="px-3 py-2.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors border border-rose-200 dark:border-rose-900/50"
+                          >
+                            Hapus Foto
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -603,15 +673,30 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">URL Gambar Thumbnail</label>
-                      <input
-                        type="text"
-                        value={projForm.image}
-                        onChange={(e) => setProjForm({ ...projForm, image: e.target.value })}
-                        placeholder="https://..."
-                        required
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-mono text-xs"
-                      />
+                      <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                        Gambar Thumbnail Proyek
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {projForm.image && (
+                          <img
+                            src={projForm.image}
+                            alt="Preview Proyek"
+                            className="w-9 h-9 rounded-lg object-cover border border-slate-200 dark:border-slate-700 shrink-0 shadow-sm"
+                          />
+                        )}
+                        <label className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                          <span className="truncate">
+                            {projForm.image ? 'Ganti File Gambar' : 'Pilih File Gambar dari Perangkat'}
+                          </span>
+                          <Upload className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 ml-1" />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleProjectImageFileChange}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
                     </div>
 
                     <div>
