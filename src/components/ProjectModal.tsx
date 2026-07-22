@@ -76,23 +76,32 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             {/* Live Actions */}
             <div className="flex items-center gap-2.5">
               <a
-                href={project.liveDemoUrl}
+                href={project.liveDemoUrl || (project as any).liveUrl || '#'}
                 target="_blank"
                 rel="noreferrer"
+                onClick={(e) => {
+                  const demo = project.liveDemoUrl || (project as any).liveUrl;
+                  if (!demo || demo === '#') {
+                    e.preventDefault();
+                    alert('Belum ada link demo yang dimasukkan untuk proyek ini.');
+                  }
+                }}
                 className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-1.5 shadow-md shadow-indigo-500/20 transition-transform active:scale-95"
               >
                 <span>Live Demo</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-semibold text-xs sm:text-sm flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 transition-transform active:scale-95"
-              >
-                <Github className="w-4 h-4" />
-                <span>GitHub</span>
-              </a>
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-semibold text-xs sm:text-sm flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 transition-transform active:scale-95"
+                >
+                  <Github className="w-4 h-4" />
+                  <span>GitHub</span>
+                </a>
+              )}
             </div>
           </div>
 

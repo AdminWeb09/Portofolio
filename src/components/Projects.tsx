@@ -105,9 +105,16 @@ export const Projects: React.FC = () => {
                     <span>Detail</span>
                   </button>
                   <a
-                    href={project.liveDemoUrl || project.liveUrl || '#'}
+                    href={project.liveDemoUrl || (project as any).liveUrl || '#'}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={(e) => {
+                      const demo = project.liveDemoUrl || (project as any).liveUrl;
+                      if (!demo || demo === '#') {
+                        e.preventDefault();
+                        alert('Belum ada link demo yang dimasukkan untuk proyek ini. Silakan atur melalui Panel Admin.');
+                      }
+                    }}
                     className="p-3 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 font-medium text-xs flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
                   >
                     <ExternalLink className="w-4 h-4" />

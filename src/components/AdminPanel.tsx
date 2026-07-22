@@ -40,8 +40,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   // Project state
   const [editingProjId, setEditingProjId] = useState<string | null>(null);
   const [projForm, setProjForm] = useState<ProjectItem>({
-    id: '', title: '', description: '', longDescription: '',
-    image: '', category: 'Web App', tags: [], featured: false
+    id: '', title: '', shortDescription: '', description: '', longDescription: '',
+    image: '', category: 'Web App', tags: [], featured: false,
+    liveDemoUrl: '', githubUrl: '', highlights: [], date: '2024'
   });
 
   // Experience state
@@ -140,12 +141,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     setSkillForm({ name: '', category: 'Frontend', level: 80, experience: '1+ tahun', icon: 'Code' });
   };
 
+  // Helper to ensure URL starts with http://, https://, or data:
+  const ensureProtocol = (url?: string) => {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:')) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  };
+
   // Project Handlers
   const handleSaveProject = (e: React.FormEvent) => {
     e.preventDefault();
-    const projToSave = {
+    const formattedLiveDemo = ensureProtocol(projForm.liveDemoUrl || (projForm as any).liveUrl);
+    const formattedGithub = ensureProtocol(projForm.githubUrl);
+
+    const projToSave: ProjectItem = {
       ...projForm,
-      id: projForm.id || `proj-${Date.now()}`
+      id: projForm.id || `proj-${Date.now()}`,
+      shortDescription: projForm.shortDescription || projForm.description || '',
+      description: projForm.description || projForm.shortDescription || '',
+      longDescription: projForm.longDescription || projForm.description || projForm.shortDescription || '',
+      liveDemoUrl: formattedLiveDemo,
+      githubUrl: formattedGithub,
+      date: projForm.date || new Date().getFullYear().toString(),
+      highlights: projForm.highlights || []
     };
 
     if (editingProjId) {
@@ -156,7 +178,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       showToast('Proyek baru berhasil ditambahkan!');
     }
     setEditingProjId(null);
-    setProjForm({ id: '', title: '', description: '', longDescription: '', image: '', category: 'Web App', tags: [], featured: false });
+    setProjForm({
+      id: '', title: '', shortDescription: '', description: '', longDescription: '',
+      image: '', category: 'Web App', tags: [], featured: false,
+      liveDemoUrl: '', githubUrl: '', highlights: [], date: '2024'
+    });
   };
 
   // Experience Handlers
@@ -848,9 +874,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                       <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Link Live Demo (Opsional)</label>
                       <input
                         type="text"
-                        value={projForm.liveUrl || ''}
-                        onChange={(e) => setProjForm({ ...projForm, liveUrl: e.target.value })}
-                        placeholder="https://myproject.com"
+                        value={projForm.liveDemoUrl || (projForm as any).liveUrl || ''}
+                        onChange={(e) => setProjForm({ ...projForm, liveDemoUrl: e.target.value, liveUrl: e.target.value } as any)}
+                        placeholder="https://myproject.com atau myproject.com"
                         className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm"
                       />
                     </div>
@@ -871,8 +897,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Deskripsi Singkat</label>
                     <textarea
                       rows={2}
-                      value={projForm.description}
-                      onChange={(e) => setProjForm({ ...projForm, description: e.target.value })}
+                      value={projForm.description || projForm.shortDescription || ''}
+                      onChange={(e) => setProjForm({ ...projForm, description: e.target.value, shortDescription: e.target.value })}
                       required
                       className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm"
                     />
@@ -904,7 +930,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={() => {
                           setEditingProjId(null);
-                          setProjForm({ id: '', title: '', description: '', longDescription: '', image: '', category: 'Web App', tags: [], featured: false });
+                          setProjForm({
+                            id: '', title: '', shortDescription: '', description: '', longDescription: '',
+                            image: '', category: 'Web App', tags: [], featured: false,
+                            liveDemoUrl: '', githubUrl: '', highlights: [], date: '2024'
+                          });
                         }}
                         className="px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-medium"
                       >
@@ -935,9 +965,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                             <button
                               onClick={() => {
                                 setEditingProjId(proj.id);
-                                setProjForm(proj);
+                                setProjForm({
+                                  ...proj,
+                                  liveDemoUrl: proj.liveDemoUrl || (proj as any).liveUrl || '',
+                                  githubUrl: proj.githubUrl || '',
+                                  shortDescription: proj.shortDescription || proj.description || '',
+                                  description: proj.description || proj.shortDescription || '',
+                                });
                               }}
                               className="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg"
+                              title="Edit Proyek"
                             >
                               <Edit3 className="w-4 h-4" />
                             </button>
