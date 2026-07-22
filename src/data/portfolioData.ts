@@ -5,7 +5,7 @@ import avatarImg from '../assets/images/profile_avatar_1784683324689.jpg';
 import projectPreviewImg from '../assets/images/project_preview_1784683337893.jpg';
 
 export const personalInfo: PersonalInfo = {
-  name: "Rizky Ramadhan",
+  name: "Arsenio",
   role: "Siswa SMK RPL & Junior Web Developer",
   subRoles: [
     "Siswa SMK Jurusan RPL",
@@ -16,7 +16,7 @@ export const personalInfo: PersonalInfo = {
   bioShort: "Siswa SMK jurusan Rekayasa Perangkat Lunak (RPL) yang berdedikasi tinggi dalam belajar koding, merancang antarmuka web interaktif, dan membangun aplikasi bermanfaat.",
   bioFull: "Saya adalah siswa kelas XII jurusan Rekayasa Perangkat Lunak (RPL) di SMK. Saya memiliki ketertarikan mendalam dalam dunia Web Development, mulai dari perancangan UI/UX di Figma hingga pengodean dengan HTML, CSS, JavaScript, React, dan Tailwind CSS. Selama sekolah, saya aktif mengerjakan proyek tugas sekolah, pernah menyelesaikan Praktik Kerja Lapangan (PKL) di industri software house, dan mengerjakan proyek website freelance untuk UMKM lokal.",
   location: "Bandung, Jawa Barat (Terbuka untuk PKL / Remote)",
-  email: "rizky.ramadhan.smk@example.com",
+  email: "arsenio.dev@example.com",
   phone: "+62 857-1234-5678",
   status: "Terbuka untuk Magang (PKL), Freelance & Junior Role",
   avatarUrl: avatarImg,
@@ -55,7 +55,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     name: "Email",
-    url: "mailto:rizky.ramadhan.smk@example.com",
+    url: "mailto:arsenio.dev@example.com",
     icon: "Mail",
     color: "hover:text-emerald-600 dark:hover:text-emerald-400"
   }

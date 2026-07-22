@@ -36,3 +36,14 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+@keyframes wave-hand {
+  0%, 100% { transform: rotate(0deg); }
+  20%, 60% { transform: rotate(14deg); }
+  40%, 80% { transform: rotate(-8deg); }
+}
+
+.animate-wave {
+  animation: wave-hand 2s infinite;
+}
+

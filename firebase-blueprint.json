@@ -1,0 +1,20 @@
+{
+  "entities": {
+    "portfolio": {
+      "title": "Portfolio Data",
+      "description": "Stores the complete portfolio data including personalInfo, skills, projects, experience, testimonials, faqs, socialLinks",
+      "type": "object",
+      "properties": {
+        "personalInfo": { "type": "object" },
+        "skills": { "type": "array" },
+        "projects": { "type": "array" },
+        "experience": { "type": "array" },
+        "testimonials": { "type": "array" },
+        "faqs": { "type": "array" },
+        "socialLinks": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["personalInfo"]
+    }
+  }
+}

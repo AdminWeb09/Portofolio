@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-md">
                 <Code className="w-5 h-5" />
               </div>
-              <span>{personalInfo.name}<span className="text-indigo-400">.dev</span></span>
+              <span>{personalInfo.name ? personalInfo.name.split(' ')[0].toLowerCase() : 'arsenio'}<span className="text-indigo-400">.dev</span></span>
             </a>
             <p className="text-slate-400 text-xs sm:text-sm max-w-sm leading-relaxed">
               {personalInfo.bioShort}

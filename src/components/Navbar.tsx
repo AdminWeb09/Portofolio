@@ -90,8 +90,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
               <Code className="w-5 h-5" />
             </div>
-            <span className="tracking-tight">
-              {personalInfo.name ? personalInfo.name.split(' ')[0] : 'Alex'}
+            <span className="tracking-tight font-extrabold text-slate-900 dark:text-white">
+              {personalInfo.name ? personalInfo.name.split(' ')[0].toLowerCase() : 'arsenio'}
               <span className="text-indigo-600 dark:text-indigo-400">.dev</span>
             </span>
           </a>

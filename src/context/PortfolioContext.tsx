@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { PersonalInfo, SkillItem, ProjectItem, ExperienceItem, TestimonialItem, SocialLink } from '../types/portfolio';
 import { personalInfo as defaultPersonalInfo, skillsData as defaultSkills, projectsData as defaultProjects, experienceData as defaultExperience, testimonialsData as defaultTestimonials, faqData as defaultFaqs, socialLinks as defaultSocialLinks } from '../data/portfolioData';
+import { db } from '../lib/firebase';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 interface FaqItem {
   q: string;
@@ -46,11 +48,12 @@ interface PortfolioContextType {
   deleteFaq: (index: number) => void;
 
   resetToDefault: () => void;
+  isCloudSynced: boolean;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'portfolio_app_data_v2';
+const STORAGE_KEY = 'portfolio_app_data_v4';
 const AUTH_KEY = 'portfolio_admin_auth_v1';
 const PASS_KEY = 'portfolio_admin_password_v1';
 
@@ -91,6 +94,9 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return saved ? JSON.parse(saved) : defaultSocialLinks;
   });
 
+  const [isCloudSynced, setIsCloudSynced] = useState<boolean>(false);
+  const isInitialRemoteLoad = useRef<boolean>(true);
+
   // Admin auth state
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(() => {
     return localStorage.getItem(AUTH_KEY) === 'true';
@@ -99,6 +105,65 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [adminPassword, setAdminPassword] = useState<string>(() => {
     return localStorage.getItem(PASS_KEY) || 'admin123';
   });
+
+  // Function to push updates to Firestore
+  const saveToFirestore = async (overrideData?: Record<string, unknown>) => {
+    try {
+      const docRef = doc(db, 'portfolio', 'main');
+      const payload = overrideData || {
+        personalInfo,
+        skills,
+        projects,
+        experience,
+        testimonials,
+        faqs,
+        socialLinks,
+        updatedAt: new Date().toISOString()
+      };
+      await setDoc(docRef, payload, { merge: true });
+      setIsCloudSynced(true);
+    } catch (err) {
+      console.error("Firestore sync error:", err);
+    }
+  };
+
+  // Setup Firestore real-time listener
+  useEffect(() => {
+    const docRef = doc(db, 'portfolio', 'main');
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.personalInfo) setPersonalInfo(data.personalInfo);
+        if (data.skills) setSkills(data.skills);
+        if (data.projects) setProjects(data.projects);
+        if (data.experience) setExperience(data.experience);
+        if (data.testimonials) setTestimonials(data.testimonials);
+        if (data.faqs) setFaqs(data.faqs);
+        if (data.socialLinks) setSocialLinks(data.socialLinks);
+        setIsCloudSynced(true);
+      } else {
+        // Document does not exist yet in Firestore -> Seed Firestore with default data
+        const initialData = {
+          personalInfo: defaultPersonalInfo,
+          skills: defaultSkills,
+          projects: defaultProjects,
+          experience: defaultExperience,
+          testimonials: defaultTestimonials,
+          faqs: defaultFaqs,
+          socialLinks: defaultSocialLinks,
+          updatedAt: new Date().toISOString()
+        };
+        setDoc(docRef, initialData, { merge: true }).then(() => {
+          setIsCloudSynced(true);
+        }).catch(err => console.error("Firestore seed error:", err));
+      }
+      isInitialRemoteLoad.current = false;
+    }, (err) => {
+      console.error("Firestore snapshot error:", err);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Save changes to localStorage whenever state changes
   useEffect(() => {
@@ -148,66 +213,97 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Actions
   const updatePersonalInfo = (info: PersonalInfo) => {
     setPersonalInfo(info);
+    saveToFirestore({ personalInfo: info });
   };
 
   const addSkill = (skill: SkillItem) => {
-    setSkills(prev => [...prev, skill]);
+    const updated = [...skills, skill];
+    setSkills(updated);
+    saveToFirestore({ skills: updated });
   };
 
   const updateSkill = (index: number, skill: SkillItem) => {
-    setSkills(prev => prev.map((item, i) => (i === index ? skill : item)));
+    const updated = skills.map((item, i) => (i === index ? skill : item));
+    setSkills(updated);
+    saveToFirestore({ skills: updated });
   };
 
   const deleteSkill = (index: number) => {
-    setSkills(prev => prev.filter((_, i) => i !== index));
+    const updated = skills.filter((_, i) => i !== index);
+    setSkills(updated);
+    saveToFirestore({ skills: updated });
   };
 
   const addProject = (project: ProjectItem) => {
-    setProjects(prev => [project, ...prev]);
+    const updated = [project, ...projects];
+    setProjects(updated);
+    saveToFirestore({ projects: updated });
   };
 
   const updateProject = (id: string, project: ProjectItem) => {
-    setProjects(prev => prev.map(p => (p.id === id ? project : p)));
+    const updated = projects.map(p => (p.id === id ? project : p));
+    setProjects(updated);
+    saveToFirestore({ projects: updated });
   };
 
   const deleteProject = (id: string) => {
-    setProjects(prev => prev.filter(p => p.id !== id));
+    const updated = projects.filter(p => p.id !== id);
+    setProjects(updated);
+    saveToFirestore({ projects: updated });
   };
 
   const addExperience = (exp: ExperienceItem) => {
-    setExperience(prev => [exp, ...prev]);
+    const updated = [exp, ...experience];
+    setExperience(updated);
+    saveToFirestore({ experience: updated });
   };
 
   const updateExperience = (id: string, exp: ExperienceItem) => {
-    setExperience(prev => prev.map(e => (e.id === id ? exp : e)));
+    const updated = experience.map(e => (e.id === id ? exp : e));
+    setExperience(updated);
+    saveToFirestore({ experience: updated });
   };
 
   const deleteExperience = (id: string) => {
-    setExperience(prev => prev.filter(e => e.id !== id));
+    const updated = experience.filter(e => e.id !== id);
+    setExperience(updated);
+    saveToFirestore({ experience: updated });
   };
 
   const addTestimonial = (testi: TestimonialItem) => {
-    setTestimonials(prev => [...prev, testi]);
+    const updated = [...testimonials, testi];
+    setTestimonials(updated);
+    saveToFirestore({ testimonials: updated });
   };
 
   const updateTestimonial = (id: string, testi: TestimonialItem) => {
-    setTestimonials(prev => prev.map(t => (t.id === id ? testi : t)));
+    const updated = testimonials.map(t => (t.id === id ? testi : t));
+    setTestimonials(updated);
+    saveToFirestore({ testimonials: updated });
   };
 
   const deleteTestimonial = (id: string) => {
-    setTestimonials(prev => prev.filter(t => t.id !== id));
+    const updated = testimonials.filter(t => t.id !== id);
+    setTestimonials(updated);
+    saveToFirestore({ testimonials: updated });
   };
 
   const addFaq = (faq: FaqItem) => {
-    setFaqs(prev => [...prev, faq]);
+    const updated = [...faqs, faq];
+    setFaqs(updated);
+    saveToFirestore({ faqs: updated });
   };
 
   const updateFaq = (index: number, faq: FaqItem) => {
-    setFaqs(prev => prev.map((f, i) => (i === index ? faq : f)));
+    const updated = faqs.map((f, i) => (i === index ? faq : f));
+    setFaqs(updated);
+    saveToFirestore({ faqs: updated });
   };
 
   const deleteFaq = (index: number) => {
-    setFaqs(prev => prev.filter((_, i) => i !== index));
+    const updated = faqs.filter((_, i) => i !== index);
+    setFaqs(updated);
+    saveToFirestore({ faqs: updated });
   };
 
   const resetToDefault = () => {
@@ -219,6 +315,15 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setFaqs(defaultFaqs);
     setSocialLinks(defaultSocialLinks);
     localStorage.clear();
+    saveToFirestore({
+      personalInfo: defaultPersonalInfo,
+      skills: defaultSkills,
+      projects: defaultProjects,
+      experience: defaultExperience,
+      testimonials: defaultTestimonials,
+      faqs: defaultFaqs,
+      socialLinks: defaultSocialLinks,
+    });
   };
 
   return (
@@ -252,6 +357,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         updateFaq,
         deleteFaq,
         resetToDefault,
+        isCloudSynced
       }}
     >
       {children}
@@ -266,3 +372,4 @@ export const usePortfolio = () => {
   }
   return context;
 };
+

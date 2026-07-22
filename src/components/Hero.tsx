@@ -61,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
 
             {/* Greeting & Name */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] mb-4">
-              Halo, Saya <br className="hidden sm:inline" />
+              Halo, saya <span className="inline-block animate-wave origin-[70%_70%]">👋</span> <br className="hidden sm:inline" />
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
                 {personalInfo.name}
               </span>
