@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, Save, RotateCcw, Plus, Trash2, Edit3, User, Cpu, Briefcase, 
   Layers, MessageSquare, HelpCircle, Lock, LogOut, CheckCircle2, 
@@ -30,6 +30,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
   // Form states
   const [personalForm, setPersonalForm] = useState(personalInfo);
+
+  useEffect(() => {
+    setPersonalForm(personalInfo);
+  }, [personalInfo]);
 
   // Skill state
   const [editingSkillIdx, setEditingSkillIdx] = useState<number | null>(null);
@@ -609,8 +613,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   </label>
                   <textarea
                     rows={3}
-                    value={personalForm.bio}
-                    onChange={(e) => setPersonalForm({ ...personalForm, bio: e.target.value })}
+                    value={personalForm.bioShort || (personalForm as any).bio || ''}
+                    onChange={(e) => setPersonalForm({ ...personalForm, bioShort: e.target.value, bio: e.target.value } as any)}
                     required
                     className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
                   />
@@ -622,14 +626,122 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   </label>
                   <input
                     type="text"
-                    value={personalForm.roles ? personalForm.roles.join(', ') : ''}
-                    onChange={(e) => setPersonalForm({ 
-                      ...personalForm, 
-                      roles: e.target.value.split(',').map(r => r.trim()).filter(Boolean) 
-                    })}
+                    value={personalForm.subRoles ? personalForm.subRoles.join(', ') : ((personalForm as any).roles ? (personalForm as any).roles.join(', ') : '')}
+                    onChange={(e) => {
+                      const rolesArr = e.target.value.split(',').map(r => r.trim()).filter(Boolean);
+                      setPersonalForm({ 
+                        ...personalForm, 
+                        subRoles: rolesArr,
+                        roles: rolesArr 
+                      } as any);
+                    }}
                     placeholder="Full Stack Developer, UI/UX Designer, Open Source Contributor"
                     className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
                   />
+                </div>
+
+                {/* ABOUT SECTION EDITING (HALAMAN TENTANG SAYA) */}
+                <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white">
+                        Pengaturan Halaman "Tentang Saya" (About)
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        Ubah narasi bio lengkap, spesialisasi, bahasa, dan riwayat pendidikan yang tampil pada section/halaman About.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      Deskripsi / Bio Lengkap "Tentang Saya"
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={personalForm.bioFull || ''}
+                      onChange={(e) => setPersonalForm({ ...personalForm, bioFull: e.target.value })}
+                      placeholder="Tuliskan latar belakang, passion, dan keahlian Anda secara mendalam..."
+                      className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                        Spesialisasi Utama
+                      </label>
+                      <input
+                        type="text"
+                        value={personalForm.specialization || ''}
+                        onChange={(e) => setPersonalForm({ ...personalForm, specialization: e.target.value })}
+                        placeholder="React, Node.js, UI/UX Design"
+                        className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                        Bahasa yang Dikuasai
+                      </label>
+                      <input
+                        type="text"
+                        value={personalForm.languages || ''}
+                        onChange={(e) => setPersonalForm({ ...personalForm, languages: e.target.value })}
+                        placeholder="Indonesia (Native), English (Professional)"
+                        className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Pendidikan */}
+                  <div className="p-4 bg-slate-100/70 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                      Informasi Pendidikan (Di Halaman About)
+                    </h5>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                        Gelar / Tingkat Pendidikan
+                      </label>
+                      <input
+                        type="text"
+                        value={personalForm.educationTitle || ''}
+                        onChange={(e) => setPersonalForm({ ...personalForm, educationTitle: e.target.value })}
+                        placeholder="S1 Teknik Informatika / Ilmu Komputer"
+                        className="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                        Nama Kampus / Sekolah & Detail
+                      </label>
+                      <input
+                        type="text"
+                        value={personalForm.educationDetail || ''}
+                        onChange={(e) => setPersonalForm({ ...personalForm, educationDetail: e.target.value })}
+                        placeholder="Universitas Bina Nusantara (BINUS) • IPK 3.82 / 4.00"
+                        className="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                        Deskripsi Fokus Studi
+                      </label>
+                      <input
+                        type="text"
+                        value={personalForm.educationDesc || ''}
+                        onChange={(e) => setPersonalForm({ ...personalForm, educationDesc: e.target.value })}
+                        placeholder="Fokus studi pada Rekayasa Perangkat Lunak & HCI"
+                        className="w-full px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="pt-2">

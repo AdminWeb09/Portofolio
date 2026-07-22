@@ -24,6 +24,11 @@ export interface PersonalInfo {
   avatarUrl: string;
   cvUrl?: string;
   cvFileName?: string;
+  specialization?: string;
+  languages?: string;
+  educationTitle?: string;
+  educationDetail?: string;
+  educationDesc?: string;
   stats: StatItem[];
 }
 
@@ -52,8 +57,9 @@ export interface ProjectItem {
   id: string;
   title: string;
   shortDescription: string;
+  description?: string;
   longDescription: string;
-  category: 'Web App' | 'UI/UX' | 'Mobile App' | 'AI & Tools';
+  category: 'Web App' | 'UI/UX' | 'Mobile App' | 'AI & Tools' | string;
   tags: string[];
   image: string;
   featured: boolean;

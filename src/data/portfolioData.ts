@@ -5,27 +5,32 @@ import avatarImg from '../assets/images/profile_avatar_1784683324689.jpg';
 import projectPreviewImg from '../assets/images/project_preview_1784683337893.jpg';
 
 export const personalInfo: PersonalInfo = {
-  name: "Alex Wijaya",
-  role: "Full Stack Developer & UI/UX Specialist",
+  name: "Rizky Ramadhan",
+  role: "Siswa SMK RPL & Junior Web Developer",
   subRoles: [
-    "Frontend Engineer",
-    "React & Next.js Enthusiast",
-    "UI/UX Designer",
-    "Node.js & Cloud Builder"
+    "Siswa SMK Jurusan RPL",
+    "Junior Web Developer",
+    "Frontend & UI Enthusiast",
+    "Pengembang Web & Mobile"
   ],
-  bioShort: "Saya berdedikasi membangun aplikasi web modern yang cepat, elegan, responsif, serta memberikan pengalaman pengguna tingkat tinggi.",
-  bioFull: "Saya adalah seorang Software Engineer berdomisili di Jakarta dengan pengalaman lebih dari 4 tahun dalam mengembangkan solusi web berskala tinggi. Spesialisasi saya mencakup pengembangan arsitektur frontend dengan React & TypeScript, pembuatan REST API / GraphQL yang terstruktur, hingga desain antarmuka pengguna yang bersih, accessible, dan berdaya guna.",
-  location: "Jakarta, Indonesia (Open to Remote)",
-  email: "alex.wijaya.dev@example.com",
-  phone: "+62 812-3456-7890",
-  status: "Tersedia untuk Project Freelance & Karir Full-time",
+  bioShort: "Siswa SMK jurusan Rekayasa Perangkat Lunak (RPL) yang berdedikasi tinggi dalam belajar koding, merancang antarmuka web interaktif, dan membangun aplikasi bermanfaat.",
+  bioFull: "Saya adalah siswa kelas XII jurusan Rekayasa Perangkat Lunak (RPL) di SMK. Saya memiliki ketertarikan mendalam dalam dunia Web Development, mulai dari perancangan UI/UX di Figma hingga pengodean dengan HTML, CSS, JavaScript, React, dan Tailwind CSS. Selama sekolah, saya aktif mengerjakan proyek tugas sekolah, pernah menyelesaikan Praktik Kerja Lapangan (PKL) di industri software house, dan mengerjakan proyek website freelance untuk UMKM lokal.",
+  location: "Bandung, Jawa Barat (Terbuka untuk PKL / Remote)",
+  email: "rizky.ramadhan.smk@example.com",
+  phone: "+62 857-1234-5678",
+  status: "Terbuka untuk Magang (PKL), Freelance & Junior Role",
   avatarUrl: avatarImg,
   cvUrl: "#",
+  specialization: "HTML, CSS, JavaScript, React, Tailwind CSS, PHP & MySQL",
+  languages: "Indonesia (Native), English (Dasar - Pasif)",
+  educationTitle: "SMK Negeri 1 Bandung (Rekayasa Perangkat Lunak)",
+  educationDetail: "SMKN 1 Bandung • Jurusan RPL (Rekayasa Perangkat Lunak) • Kelas XII",
+  educationDesc: "Mempelajari Pemrograman Web & Bergerak, Pemrograman Berorientasi Objek (PBO), Basis Data (MySQL), Desain Grafis / UI, dan Praktik Kerja Lapangan (PKL).",
   stats: [
-    { label: "Tahun Pengalaman", value: "4+", subtext: "Di Industri Tech & Digital" },
-    { label: "Proyek Selesai", value: "35+", subtext: "Web, Mobile & UI/UX" },
-    { label: "Kepuasan Klien", value: "99%", subtext: "Ulasan Positif" },
-    { label: "Komitmen Waktu", value: "100%", subtext: "Tepat Waktu & Teliti" }
+    { label: "Tingkat Pendidikan", value: "Kelas XII", subtext: "Jurusan RPL (SMK)" },
+    { label: "Proyek & Tugas Akhir", value: "15+", subtext: "Web App & UI Design" },
+    { label: "Pengalaman PKL", value: "6 Bulan", subtext: "Di Software House" },
+    { label: "Semangat Belajar", value: "100%", subtext: "Siap Berkarya" }
   ]
 };
 
@@ -49,14 +54,8 @@ export const socialLinks: SocialLink[] = [
     color: "hover:text-pink-600 dark:hover:text-pink-400"
   },
   {
-    name: "Twitter / X",
-    url: "https://twitter.com",
-    icon: "Twitter",
-    color: "hover:text-sky-500 dark:hover:text-sky-400"
-  },
-  {
     name: "Email",
-    url: "mailto:alex.wijaya.dev@example.com",
+    url: "mailto:rizky.ramadhan.smk@example.com",
     icon: "Mail",
     color: "hover:text-emerald-600 dark:hover:text-emerald-400"
   }
@@ -64,188 +63,148 @@ export const socialLinks: SocialLink[] = [
 
 export const skillsData: SkillItem[] = [
   // Frontend
-  { name: "React / Next.js", category: "Frontend", level: 95, iconName: "Code2", yearsOfExp: "4 thn", featured: true },
-  { name: "TypeScript", category: "Frontend", level: 90, iconName: "FileCode2", yearsOfExp: "3 thn", featured: true },
-  { name: "Tailwind CSS", category: "Frontend", level: 95, iconName: "Palette", yearsOfExp: "4 thn", featured: true },
-  { name: "HTML5 & CSS3 / SCSS", category: "Frontend", level: 98, iconName: "Layout", yearsOfExp: "4+ thn", featured: true },
-  { name: "JavaScript (ES6+)", category: "Frontend", level: 95, iconName: "Zap", yearsOfExp: "4+ thn", featured: false },
-  { name: "State Management (Redux / Zustand)", category: "Frontend", level: 88, iconName: "Layers", yearsOfExp: "3 thn", featured: false },
+  { name: "HTML5 & CSS3", category: "Frontend", level: 92, iconName: "Layout", yearsOfExp: "2 thn", featured: true },
+  { name: "JavaScript (ES6+)", category: "Frontend", level: 85, iconName: "Zap", yearsOfExp: "2 thn", featured: true },
+  { name: "React.js", category: "Frontend", level: 80, iconName: "Code2", yearsOfExp: "1.5 thn", featured: true },
+  { name: "Tailwind CSS & Bootstrap", category: "Frontend", level: 88, iconName: "Palette", yearsOfExp: "2 thn", featured: true },
+  { name: "TypeScript Dasar", category: "Frontend", level: 75, iconName: "FileCode2", yearsOfExp: "1 thn", featured: false },
   
-  // Backend
-  { name: "Node.js & Express", category: "Backend", level: 88, iconName: "Server", yearsOfExp: "3 thn", featured: true },
-  { name: "REST API & GraphQL", category: "Backend", level: 90, iconName: "Globe", yearsOfExp: "3 thn", featured: true },
-  { name: "PostgreSQL & Prisma / Drizzle", category: "Backend", level: 82, iconName: "Database", yearsOfExp: "2 thn", featured: true },
-  { name: "MongoDB / Firestore", category: "Backend", level: 85, iconName: "HardDrive", yearsOfExp: "3 thn", featured: false },
+  // Backend & Database
+  { name: "PHP Dasar & Laravel Basic", category: "Backend", level: 78, iconName: "Server", yearsOfExp: "2 thn", featured: true },
+  { name: "MySQL / Database Relasional", category: "Backend", level: 82, iconName: "Database", yearsOfExp: "2 thn", featured: true },
+  { name: "Node.js & Express Basic", category: "Backend", level: 72, iconName: "Globe", yearsOfExp: "1 thn", featured: false },
 
   // Tools & UI/UX
-  { name: "Figma & UI/UX Wireframing", category: "Tools & UI/UX", level: 85, iconName: "Figma", yearsOfExp: "3 thn", featured: true },
-  { name: "Git & GitHub Actions", category: "Tools & UI/UX", level: 92, iconName: "GitBranch", yearsOfExp: "4 thn", featured: true },
-  { name: "Vite & Webpack", category: "Tools & UI/UX", level: 90, iconName: "Cpu", yearsOfExp: "3 thn", featured: false },
-  { name: "Framer Motion & Animations", category: "Tools & UI/UX", level: 88, iconName: "Sparkles", yearsOfExp: "2 thn", featured: true },
+  { name: "Figma (UI/UX Wireframing)", category: "Tools & UI/UX", level: 82, iconName: "Figma", yearsOfExp: "2 thn", featured: true },
+  { name: "Git & GitHub", category: "Tools & UI/UX", level: 85, iconName: "GitBranch", yearsOfExp: "2 thn", featured: true },
+  { name: "VS Code & DevTools", category: "Tools & UI/UX", level: 90, iconName: "Cpu", yearsOfExp: "2 thn", featured: false },
 
   // Soft Skills
-  { name: "Pemecahan Masalah (Problem Solving)", category: "Soft Skills", level: 95, iconName: "Brain", yearsOfExp: "4+ thn", featured: false },
-  { name: "Komunikasi & Kolaborasi Tim", category: "Soft Skills", level: 90, iconName: "Users", yearsOfExp: "4+ thn", featured: false },
-  { name: "Manajemen Waktu & Agile/Scrum", category: "Soft Skills", level: 92, iconName: "Clock", yearsOfExp: "3 thn", featured: false }
+  { name: "Kerja Sama Tim & Kedisiplinan", category: "Soft Skills", level: 92, iconName: "Users", yearsOfExp: "Masa SMK", featured: false },
+  { name: "Keinginan Belajar Hal Baru", category: "Soft Skills", level: 98, iconName: "Brain", yearsOfExp: "Masa SMK", featured: false },
+  { name: "Manajemen Waktu Tugas", category: "Soft Skills", level: 88, iconName: "Clock", yearsOfExp: "Masa SMK", featured: false }
 ];
 
 export const experienceData: ExperienceItem[] = [
   {
     id: "exp-1",
-    role: "Senior Frontend Engineer",
-    company: "Nusa Digital Studio",
-    period: "2023 - Sekarang",
-    location: "Jakarta, Indonesia",
-    type: "Full-time",
-    description: "Memimpin tim frontend dalam merancang dan mengembangkan aplikasi SaaS berskala enterprise berbasis React, Next.js, dan Tailwind CSS.",
+    role: "Peserta Praktik Kerja Lapangan (PKL) Web Developer",
+    company: "PT Digital Solusindo Nusantara",
+    period: "Jan 2024 - Jun 2024 (6 Bulan PKL)",
+    location: "Bandung, Indonesia",
+    type: "PKL / Intern",
+    description: "Melaksanakan Praktik Kerja Lapangan (PKL) selama 6 bulan di divisi IT Software Development. Membantu slicing desain antarmuka Figma ke dalam HTML, CSS, Tailwind CSS, dan React.",
     achievements: [
-      "Meningkatkan kecepatan loading halaman hingga 45% melalui pemisahan kode dan optimasi aset.",
-      "Membangun design system internal yang digunakan oleh 15+ pengembang.",
-      "Mengintegrasikan fitur real-time dashboard dengan WebSocket dan Recharts."
+      "Membantu memotong (slicing) 8+ halaman website perusahaan hingga responsif sempurna.",
+      "Mendapat predikat nilai Sangat Baik (A) dari pembimbing lapangan industri.",
+      "Memahami alur kolaborasi tim pemrograman profesional dengan Git & GitHub."
     ],
-    skills: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Zustand"]
+    skills: ["HTML", "CSS", "Tailwind CSS", "React", "Git", "Figma"]
   },
   {
     id: "exp-2",
-    role: "Full Stack Developer",
-    company: "Inovasi Karya Tech",
-    period: "2021 - 2023",
-    location: "Bandung, Indonesia (Hybrid)",
-    type: "Full-time",
-    description: "Mengembangkan berbagai aplikasi web e-commerce, sistem kasir POS, dan portal manajemen konten berbasis Node.js & React.",
+    role: "Anggota Tim IT & Media OSIS / Ekstrakurikuler Koding",
+    company: "SMK Negeri 1 Bandung",
+    period: "2023 - Sekarang",
+    location: "Sekolah",
+    type: "Organisasi Sekolah",
+    description: "Mengembangkan dan mengelola halaman website pendaftaran kegiatan perlombaan antar-siswa serta membuat media informasi digital sekolah.",
     achievements: [
-      "Mengembangkan 10+ modul e-commerce dengan sistem pembayaran Midtrans dan Stripe.",
-      "Meningkatkan skor performa Lighthouse dari 62 menjadi 98.",
-      "Mendesain REST API berskala microservice dengan ekspansi pengguna aktif harian mencapai 20.000+ user."
+      "Membuat form pendaftaran perlombaan cup sekolah secara online.",
+      "Mengadakan sesi sharing koding dasar HTML/CSS untuk adik tingkat kelas X."
     ],
-    skills: ["Node.js", "Express", "React", "PostgreSQL", "Docker"]
+    skills: ["React", "Tailwind CSS", "PHP", "Canva"]
   },
   {
     id: "exp-3",
-    role: "UI/UX Designer & Frontend Freelancer",
-    company: "Self-Employed",
-    period: "2020 - 2021",
-    location: "Remote",
+    role: "Junior Freelance Web Developer (Project Mandiri)",
+    company: "Siswa Freelancer",
+    period: "2023 - Sekarang",
+    location: "Remote / Bandung",
     type: "Freelance",
-    description: "Membantu UMKM dan Startup lokal merancang antarmuka produk digital (wireframe, mockup, prototype) serta mengimplementasikannya ke dalam kode React.",
+    description: "Mengerjakan proyek pembuatan landing page dan katalog produk UMKM lokal sebagai wadah latihan mengasah keterampilan koding di luar jam sekolah.",
     achievements: [
-      "Menyelesaikan 15+ proyek web & landing page dengan kepuasan klien 100%.",
-      "Membuat prototype interaktif Figma yang mempercepat siklus persetujuan desain sebesar 50%."
+      "Menyelesaikan 4+ website katalog usaha lokal seperti Kedai Kopi dan Toko Pakaian.",
+      "Mendapatkan ulasan puas dari pemilik usaha atas tampilan web yang modern dan rapi."
     ],
-    skills: ["Figma", "HTML/CSS", "JavaScript", "Tailwind CSS"]
+    skills: ["HTML/CSS", "JavaScript", "Tailwind CSS", "WordPress"]
   }
 ];
 
 export const projectsData: ProjectItem[] = [
   {
     id: "proj-1",
-    title: "NovaAnalytics - Cloud Business Intelligence Dashboard",
-    shortDescription: "Platform analytics modern dengan visualisasi data real-time, grafik interaktif, dan laporan otomatis berbasis AI.",
-    longDescription: "NovaAnalytics diciptakan untuk membantu pemilik bisnis memantau performa penjualan, metrik pengguna, serta tren pendapatan secara real-time. Dilengkapi dengan filter periode dinamis, ekspor PDF/CSV, serta tema gelap & terang yang nyaman di mata.",
+    title: "SimPerpus - Sistem Informasi Perpustakaan Sekolah",
+    shortDescription: "Aplikasi manajemen data buku, transaksi peminjaman, dan pengembalian perpustakaan sekolah berbasis web.",
+    longDescription: "Dibuat sebagai Proyek Tugas Akhir mata pelajaran Pemrograman Web & PBO. SimPerpus membantu petugas sekolah mencatat peminjaman buku, memantau denda keterlambatan, serta pencarian katalog buku berbasis kategori.",
     category: "Web App",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Recharts", "Node.js"],
+    tags: ["React", "Tailwind CSS", "JavaScript", "LocalStorage"],
     image: projectPreviewImg,
     featured: true,
-    liveDemoUrl: "https://example.com/demo1",
-    githubUrl: "https://github.com/example/nova-analytics",
+    liveDemoUrl: "https://example.com/demo-simperpus",
+    githubUrl: "https://github.com/example/simperpus-smk",
     highlights: [
-      "Visualisasi chart interaktif menggunakan Recharts & D3.js",
-      "Performa render cepat di atas 95+ pada Lighthouse",
-      "Dukungan mode gelap penuh dan tata letak responsif",
-      "Integrasi API simulasi data penjualan real-time"
+      "Pencarian buku interaktif dengan filter kategori cepat",
+      "Kalkulator denda keterlambatan otomatis",
+      "Penyimpanan data lokal yang ramah & cepat diakses",
+      "Desain bersih & responsif untuk laptop maupun HP"
     ],
-    metrics: "Dipakai oleh 50+ pengguna penguji beta",
+    metrics: "Proyek Tugas Akhir Terbaik Jurusan RPL",
     date: "2024"
   },
   {
     id: "proj-2",
-    title: "KopiKita - E-Commerce & Loyalty App UI/UX",
-    shortDescription: "Aplikasi e-commerce pemesanan kopi lokal berbasis web app dengan sistem loyalty point dan pemesanan meja.",
-    longDescription: "KopiKita mempermudah pecinta kopi untuk memesan minuman favorit secara online, melacak status pembuatan pesanan secara real-time, serta mengumpulkan poin hadiah untuk ditukarkan voucher diskon.",
+    title: "Portal E-Katalog & Kasir Warung Kopi UMKM",
+    shortDescription: "Website katalog menu dan sistem kasir digital sederhana untuk pencatatan transaksi pesanan makanan & minuman.",
+    longDescription: "Proyek freelance pertama untuk usaha warung kopi lokal di Bandung. Memungkinkan pembeli melihat daftar menu beserta foto & harga, serta kasir menghitung total pembayaran pesanan secara otomatis.",
     category: "Web App",
-    tags: ["React", "Tailwind CSS", "Framer Motion", "Zustand"],
+    tags: ["React", "Tailwind CSS", "Framer Motion"],
     image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1200&auto=format&fit=crop",
     featured: true,
-    liveDemoUrl: "https://example.com/demo2",
-    githubUrl: "https://github.com/example/kopikita-app",
+    liveDemoUrl: "https://example.com/demo-ekatalog",
+    githubUrl: "https://github.com/example/katalog-kopi",
     highlights: [
-      "Pengalaman Checkout interaktif dengan animasi smooth",
-      "Sistem filter menu berdasarkan kategori rasa dan suhu",
-      "Responsif sempurna untuk layar smartphone & tablet"
+      "Fitur keranjang belanja sederhana & nota transaksi",
+      "Desain tema modern yang ramah pengguna smartphone",
+      "Integrasi tombol WhatsApp langsung ke penjual"
     ],
-    metrics: "+35% Konversi Pemesanan pada Uji Coba Usability",
+    metrics: "Digunakan langsung oleh Mitra UMKM Kopi",
     date: "2024"
   },
   {
     id: "proj-3",
-    title: "CraftUI - Accessible Component Library & Design System",
-    shortDescription: "Design system & dokumentasi komponen UI siap pakai dengan kepatuhan standar aksesibilitas WCAG 2.1.",
-    longDescription: "CraftUI adalah pustaka komponen React open-source yang dibuat dengan Tailwind CSS dan Radix UI primitives. Mengedepankan kontras warna optimal, keyboard navigation, dan kemudahan kustomisasi.",
+    title: "Redesign Antarmuka Website SMKN 1 (UI/UX Konsep)",
+    shortDescription: "Konsep desain ulang antarmuka portal informasi sekolah agar tampil lebih segar, modern, dan mudah diakses siswa.",
+    longDescription: "Dibuat untuk persiapan Lomba Kompetensi Siswa (LKS) bidang Web Design. Menampilkan tata letak jadwal pelajaran, pengumuman kelulusan, galeri prestasi, dan struktur organisasi guru.",
     category: "UI/UX",
-    tags: ["React", "Tailwind CSS", "TypeScript", "A11y", "Storybook"],
+    tags: ["Figma", "UI/UX", "Prototyping", "Design System"],
     image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1200&auto=format&fit=crop",
     featured: true,
-    liveDemoUrl: "https://example.com/demo3",
-    githubUrl: "https://github.com/example/craft-ui-library",
+    liveDemoUrl: "https://example.com/demo-ui-smk",
+    githubUrl: "https://github.com/example/redesign-smk-figma",
     highlights: [
-      "40+ komponen UI siap pakai (Button, Modal, Toast, Tabs, Card, dsb.)",
-      "Dukungan keyboard navigation & screen reader",
-      "Dokumentasi lengkap dengan kode salin sekali klik"
+      "Wireframe & Prototype interaktif di Figma",
+      "Standar warna cerah berkarakter edukatif",
+      "Navigasi cepat untuk pengumuman & berita sekolah"
     ],
-    metrics: "1,200+ Stars di GitHub Repo",
+    metrics: "Juara 2 Seleksi LKS Internal Sekolah",
     date: "2023"
   },
   {
     id: "proj-4",
-    title: "SmartFit - Fitness & Meal Tracker Mobile Web",
-    shortDescription: "Aplikasi pemantau kebugaran harian, kalori Makanan, serta jadwal olahraga interaktif.",
-    longDescription: "SmartFit menyajikan grafik kemajuan kebugaran mingguan, kalkulator kebutuhan kalori harian (BMR & TDEE), serta rekomendasi resep sehat berbasis profil pengguna.",
-    category: "Mobile App",
-    tags: ["React", "Tailwind CSS", "PWA", "Lucide Icons"],
+    title: "Aplikasi Catatan Tugas & Jadwal Pelajaran (StudyPlan)",
+    shortDescription: "Aplikasi web mandiri untuk membantu siswa SMK mencatat jadwal pelajaran, PR sekolah, dan reminder tugas kelompok.",
+    longDescription: "Aplikasi ini mempermudah teman-teman sekelas dalam mengingat tenggat waktu tugas sekolah dan menyimpan catatan penting harian.",
+    category: "Web App",
+    tags: ["React", "Tailwind CSS", "PWA"],
     image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1200&auto=format&fit=crop",
     featured: false,
-    liveDemoUrl: "https://example.com/demo4",
-    githubUrl: "https://github.com/example/smartfit-pwa",
+    liveDemoUrl: "https://example.com/demo-studyplan",
+    githubUrl: "https://github.com/example/studyplan-app",
     highlights: [
-      "Tampilan PWA (Progressive Web App) dapat diinstal di HP",
-      "Penyimpanan lokal cepat dengan Offline-First state",
-      "Kalkulator nutrisi & rekomendasi aktivitas harian"
-    ],
-    date: "2023"
-  },
-  {
-    id: "proj-5",
-    title: "PromptStudio - AI Content Generator Dashboard",
-    shortDescription: "Aplikasi generator artikel, ide konten sosial media, dan ringkasan teks otomatis berbasis AI.",
-    longDescription: "PromptStudio memanfaatkan model bahasa kecerdasan buatan untuk membantu content creator merancang headline, draft postingan, serta copywriting produk dalam hitungan detik.",
-    category: "AI & Tools",
-    tags: ["React", "TypeScript", "Node.js", "Express", "Tailwind CSS"],
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
-    featured: false,
-    liveDemoUrl: "https://example.com/demo5",
-    githubUrl: "https://github.com/example/prompt-studio-ai",
-    highlights: [
-      "Generator konten otomatis dengan streaming teks real-time",
-      "Penyimpanan draf favorit dan fitur ekspor Markdown",
-      "Antarmuka bersih dengan kontrol temperatur & prompt preset"
-    ],
-    date: "2024"
-  },
-  {
-    id: "proj-6",
-    title: "TravelNusa - Booking & Tour Landing Page",
-    shortDescription: "Website eksplorasi destinasi wisata Indonesia dengan galeri foto memukau dan formulir pemesanan langsung.",
-    longDescription: "TravelNusa mempromosikan keindahan destinasi wisata nusantara dari Bali, Raja Ampat hingga Komodo dengan efek paralaks, filter harga paket, dan peta interaktif.",
-    category: "UI/UX",
-    tags: ["React", "Tailwind CSS", "Framer Motion", "Unsplash API"],
-    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop",
-    featured: false,
-    liveDemoUrl: "https://example.com/demo6",
-    githubUrl: "https://github.com/example/travel-nusa",
-    highlights: [
-      "Galeri foto resolusi tinggi dengan animasi lightbox",
-      "Estimasi biaya perjalanan otomatis berdasarkan jumlah orang",
-      "Tata letak responsif disesuaikan untuk smartphone & tablet"
+      "Penanda warna untuk prioritas tugas sekolah",
+      "Penyimpanan offline browser (LocalStorage)",
+      "Mode gelap & terang hemat daya baterai"
     ],
     date: "2023"
   }
@@ -254,48 +213,49 @@ export const projectsData: ProjectItem[] = [
 export const testimonialsData: TestimonialItem[] = [
   {
     id: "testi-1",
-    name: "Budi Santoso",
-    role: "CEO & Co-Founder",
-    company: "Nusa Digital Group",
+    name: "Gunawan, S.Kom.",
+    role: "Guru Produktif RPL",
+    company: "SMK Negeri 1 Bandung",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
-    content: "Alex adalah pengembang frontend yang luar biasa. Ia tidak hanya mampu menerjemahkan desain Figma menjadi kode yang sangat presisi, tetapi juga memikirkan aspek performa, SEO, dan kenyamanan pengguna secara detail.",
+    content: "Rizky adalah siswa yang sangat antusias dan tekun di kelas RPL. Ia sering membantu teman-temannya dalam memahami logika koding dan selalu menyelesaikan tugas praktik dengan rapi melebihi ekspektasi.",
     rating: 5
   },
   {
     id: "testi-2",
-    name: "Siti Rahmawati",
-    role: "Product Manager",
-    company: "Inovasi Karya Tech",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
-    content: "Bekerja bersama Alex sangat menyenangkan. Komunikasinya sangat proaktif, hasil pekerjaannya tepat waktu, dan kode yang ia tulis sangat bersih serta mudah dirawat oleh pengembang lain.",
+    name: "Bambang Kurnia",
+    role: "Pembimbing Industri / Senior Web Dev",
+    company: "PT Digital Solusindo Nusantara",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+    content: "Selama 6 bulan mengikuti PKL di perusahaan kami, Rizky menunjukkan sopan santun, ketelitian, dan kemampuan adaptasi yang sangat baik. Hasil slicing antarmukanya sangat presisi dan siap diintegrasikan.",
     rating: 5
   },
   {
     id: "testi-3",
-    name: "Deni Pratama",
-    role: "Founder",
-    company: "KopiKita Coffee",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
-    content: "Aplikasi web e-commerce yang dikembangkan Alex untuk KopiKita langsung meningkatkan jumlah pemesanan online kami sebesar 30% pada bulan pertama peluncuran. Sangat merekomendasikan jasanya!",
+    name: "Fikri Ardiansyah",
+    role: "Ketua OSIS",
+    company: "SMKN 1 Bandung",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
+    content: "Website pendaftaran event sekolah yang dibuat Rizky sangat memudahkan panitia dan ribuan peserta yang mendaftar secara online. Sangat responsif dan bebas dari error!",
     rating: 5
   }
 ];
 
 export const faqData = [
   {
-    q: "Apakah Alex menerima proyek freelance atau kontrak?",
-    a: "Ya! Saya terbuka untuk proyek freelance skala kecil maupun besar, pengerjaan landing page, pembuatan web app custom, hingga posisi full-time / remote contract."
+    q: "Apakah Rizky menerima tawaran Magang (PKL Lanjutan) atau Kerja?",
+    a: "Sangat bersedia! Saya terbuka untuk kesempatan Magang / PKL lanjutan, proyek website freelance, maupun posisi Junior Web Developer setelah lulus dari SMK."
   },
   {
-    q: "Berapa lama estimasi waktu pengerjaan sebuah website?",
-    a: "Estimasi waktu tergantung pada kompleksitas proyek. Untuk landing page / portofolio biasanya membutuhkan waktu 3-7 hari, sedangkan web application dengan fitur dinamis membutuhkan waktu 2-4 minggu."
+    q: "Apa jurusan yang diambil di sekolah?",
+    a: "Saya mengambil jurusan Rekayasa Perangkat Lunak (RPL) di SMK, mempelajari pemrograman web, basis data, PBO, dan pengembangan software."
   },
   {
-    q: "Teknologi apa saja yang paling sering digunakan?",
-    a: "Spesialisasi utama saya adalah React, Next.js, TypeScript, Tailwind CSS, Node.js, Express, dan PostgreSQL/MongoDB."
+    q: "Teknologi apa saja yang sudah dipelajari dan dikuasai?",
+    a: "Teknologi utama yang saya pelajari meliputi HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS, Bootstrap, PHP & MySQL dasar, serta tools Figma dan Git/GitHub."
   },
   {
-    q: "Bagaimana alur pengerjaan sebuah proyek?",
-    a: "Alur umum: 1) Diskusi kebutuhan & fitur -> 2) Wireframe/Desain -> 3) Pengerjaan Kode & Integrasi -> 4) Pengujian (Testing & Feedback) -> 5) Peluncuran & Dukungan."
+    q: "Berapa lama estimasi pengerjaan website proyek freelance?",
+    a: "Untuk website pendaratan (landing page) atau e-katalog sederhana biasanya membutuhkan waktu 3 hingga 7 hari pengerjaan."
   }
 ];
+

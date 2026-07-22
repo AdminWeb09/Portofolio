@@ -50,7 +50,7 @@ interface PortfolioContextType {
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'portfolio_app_data_v1';
+const STORAGE_KEY = 'portfolio_app_data_v2';
 const AUTH_KEY = 'portfolio_admin_auth_v1';
 const PASS_KEY = 'portfolio_admin_password_v1';
 

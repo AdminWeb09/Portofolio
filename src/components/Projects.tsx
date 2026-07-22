@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { FolderKanban, ExternalLink, Github, Search, Eye, Sparkles } from 'lucide-react';
+import { FolderKanban, ExternalLink, Github, Search, Eye, Sparkles, Plus } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { ProjectItem } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
+import { AddProjectModal } from './AddProjectModal';
 
 export const Projects: React.FC = () => {
   const { projects } = usePortfolio();
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeProjectModal, setActiveProjectModal] = useState<ProjectItem | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
 
   const categories = ['Semua', 'Web App', 'UI/UX', 'Mobile App', 'AI & Tools'];
 
@@ -41,11 +43,11 @@ export const Projects: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+        {/* Filter Controls & Action */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
           
           {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -61,16 +63,27 @@ export const Projects: React.FC = () => {
             ))}
           </div>
 
-          {/* Search Box */}
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Cari proyek atau teknologi..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
-            />
+          <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+            {/* Search Box */}
+            <div className="relative flex-1 md:w-64">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari proyek atau teknologi..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
+              />
+            </div>
+
+            {/* Tambah Proyek Button */}
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md shadow-indigo-500/20 transition-all hover:scale-105 shrink-0"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Tambah Proyek</span>
+            </button>
           </div>
 
         </div>
@@ -212,6 +225,12 @@ export const Projects: React.FC = () => {
       <ProjectModal
         project={activeProjectModal}
         onClose={() => setActiveProjectModal(null)}
+      />
+
+      {/* Add Project Modal */}
+      <AddProjectModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
       />
     </section>
   );

@@ -79,15 +79,19 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800/60">
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Spesialisasi</span>
-                  <span className="text-slate-900 dark:text-white font-semibold">React, Node.js, UI/UX</span>
+                  <span className="text-slate-900 dark:text-white font-semibold">
+                    {personalInfo.specialization || "React, Node.js, UI/UX"}
+                  </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800/60">
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Status Pekerjaan</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Open for Hire</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{personalInfo.status}</span>
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Bahasa</span>
-                  <span className="text-slate-900 dark:text-white font-semibold">Indonesia (Native), English (Professional)</span>
+                  <span className="text-slate-900 dark:text-white font-semibold">
+                    {personalInfo.languages || "Indonesia (Native), English (Professional)"}
+                  </span>
                 </div>
               </div>
 
@@ -197,16 +201,16 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
                 <div className="border-l-2 border-indigo-500 pl-6 space-y-6">
                   <div>
                     <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-                      2017 - 2021
+                      Pendidikan Terakhir
                     </span>
                     <h4 className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
-                      S1 Teknik Informatika / Ilmu Komputer
+                      {personalInfo.educationTitle || "S1 Teknik Informatika / Ilmu Komputer"}
                     </h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                      Universitas Bina Nusantara (BINUS) • IPK 3.82 / 4.00
+                      {personalInfo.educationDetail || "Universitas Bina Nusantara (BINUS) • IPK 3.82 / 4.00"}
                     </p>
                     <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">
-                      Fokus studi pada Rekayasa Perangkat Lunak, Algoritma Pemrograman, dan Human-Computer Interaction (HCI).
+                      {personalInfo.educationDesc || "Fokus studi pada Rekayasa Perangkat Lunak, Algoritma Pemrograman, dan Human-Computer Interaction (HCI)."}
                     </p>
                   </div>
 
