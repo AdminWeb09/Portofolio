@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   X, Save, RotateCcw, Plus, Trash2, Edit3, User, Cpu, Briefcase, 
   Layers, MessageSquare, HelpCircle, Lock, LogOut, CheckCircle2, 
-  ExternalLink, Sparkles, AlertTriangle, Upload
+  ExternalLink, Sparkles, AlertTriangle, Upload, FileText, Download
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { SkillItem, ProjectItem, ExperienceItem, TestimonialItem } from '../types/portfolio';
@@ -91,6 +91,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
         if (event.target?.result) {
           setProjForm(prev => ({ ...prev, image: event.target!.result as string }));
           showToast('Gambar proyek berhasil diunggah!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Ukuran file CV terlalu besar. Maksimal 10MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setPersonalForm(prev => ({
+            ...prev,
+            cvUrl: event.target!.result as string,
+            cvFileName: file.name
+          }));
+          showToast(`File CV "${file.name}" berhasil diunggah!`);
         }
       };
       reader.readAsDataURL(file);
@@ -440,6 +462,62 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                           >
                             Hapus Foto
                           </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    Dokumen CV / Resume Saya
+                  </label>
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-4">
+                    <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0">
+                      <FileText className="w-8 h-8" />
+                    </div>
+
+                    <div className="flex-1 text-center sm:text-left space-y-1">
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                        {personalForm.cvFileName ? personalForm.cvFileName : 'Belum Ada File CV Khusus Terunggah'}
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        {personalForm.cvUrl 
+                          ? 'File CV Anda siap diunduh oleh pengunjung portfolio.'
+                          : 'Pilih file CV asli Anda (PDF / Doc / Gambar) langsung dari HP atau komputer.'}
+                      </p>
+
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2">
+                        <label className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-sm flex items-center gap-2">
+                          <Upload className="w-4 h-4" />
+                          <span>{personalForm.cvUrl ? 'Ganti File CV Saya' : 'Unggah File CV Saya'}</span>
+                          <input
+                            type="file"
+                            accept=".pdf,.doc,.docx,image/*"
+                            onChange={handleCvFileChange}
+                            className="hidden"
+                          />
+                        </label>
+
+                        {personalForm.cvUrl && (
+                          <>
+                            <a
+                              href={personalForm.cvUrl}
+                              download={personalForm.cvFileName || 'CV_Saya.pdf'}
+                              className="px-3 py-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 rounded-xl transition-colors border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              <span>Unduh / Cek File</span>
+                            </a>
+
+                            <button
+                              type="button"
+                              onClick={() => setPersonalForm({ ...personalForm, cvUrl: '', cvFileName: '' })}
+                              className="px-3 py-2.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors border border-rose-200 dark:border-rose-900/50"
+                            >
+                              Hapus CV
+                            </button>
+                          </>
                         )}
                       </div>
                     </div>

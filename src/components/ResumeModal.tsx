@@ -46,6 +46,16 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             </div>
 
             <div className="flex items-center gap-2">
+              {personalInfo.cvUrl && (
+                <a
+                  href={personalInfo.cvUrl}
+                  download={personalInfo.cvFileName || `${personalInfo.name.replace(/\s+/g, '_')}_CV.pdf`}
+                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh File CV ({personalInfo.cvFileName || 'Dokumen Asli'})</span>
+                </a>
+              )}
               <button
                 onClick={handlePrint}
                 className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs flex items-center gap-1.5 transition-colors"

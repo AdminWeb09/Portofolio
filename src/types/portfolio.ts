@@ -23,6 +23,7 @@ export interface PersonalInfo {
   status: string;
   avatarUrl: string;
   cvUrl?: string;
+  cvFileName?: string;
   stats: StatItem[];
 }
 
