@@ -7,7 +7,6 @@ import { About } from './components/About';
 import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
-import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { Toast } from './components/Toast';
@@ -31,7 +30,6 @@ export default function App() {
             <Skills />
             <Projects />
             <ExperienceTimeline />
-            <Testimonials />
             <Contact onShowToast={(msg) => setToastMessage(msg)} />
           </main>
 

@@ -30,10 +30,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
   // Form states
   const [personalForm, setPersonalForm] = useState(personalInfo);
+  const [subRolesInput, setSubRolesInput] = useState(() => 
+    personalInfo.subRoles ? personalInfo.subRoles.join(', ') : ''
+  );
 
   useEffect(() => {
-    setPersonalForm(personalInfo);
-  }, [personalInfo]);
+    if (isOpen) {
+      setPersonalForm(personalInfo);
+      setSubRolesInput(personalInfo.subRoles ? personalInfo.subRoles.join(', ') : '');
+    }
+  }, [isOpen, personalInfo]);
 
   // Skill state
   const [editingSkillIdx, setEditingSkillIdx] = useState<number | null>(null);
@@ -43,6 +49,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
   // Project state
   const [editingProjId, setEditingProjId] = useState<string | null>(null);
+  const [projTagsInput, setProjTagsInput] = useState('');
   const [projForm, setProjForm] = useState<ProjectItem>({
     id: '', title: '', shortDescription: '', description: '', longDescription: '',
     image: '', category: 'Web App', tags: [], featured: false,
@@ -51,6 +58,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
   // Experience state
   const [editingExpId, setEditingExpId] = useState<string | null>(null);
+  const [achievementsInput, setAchievementsInput] = useState('');
   const [expForm, setExpForm] = useState<ExperienceItem>({
     id: '', company: '', role: '', period: '', location: '', description: '', achievements: []
   });
@@ -66,48 +74,73 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File, maxWidth = 800, maxHeight = 800, quality = 0.8): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          } else {
+            resolve(event.target?.result as string);
+          }
+        };
+        img.onerror = () => resolve(event.target?.result as string);
+      };
+      reader.onerror = () => resolve('');
+    });
+  };
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         alert('Ukuran file foto terlalu besar. Maksimal 5MB.');
         return;
       }
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setPersonalForm(prev => ({ ...prev, avatarUrl: event.target!.result as string }));
-          showToast('Foto profil berhasil diunggah!');
-        }
-      };
-      reader.readAsDataURL(file);
+      const compressedDataUrl = await compressImage(file, 600, 600, 0.85);
+      setPersonalForm(prev => ({ ...prev, avatarUrl: compressedDataUrl }));
+      showToast('Foto profil berhasil diunggah!');
     }
   };
 
-  const handleProjectImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProjectImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         alert('Ukuran file gambar terlalu besar. Maksimal 5MB.');
         return;
       }
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setProjForm(prev => ({ ...prev, image: event.target!.result as string }));
-          showToast('Gambar proyek berhasil diunggah!');
-        }
-      };
-      reader.readAsDataURL(file);
+      const compressedDataUrl = await compressImage(file, 900, 600, 0.8);
+      setProjForm(prev => ({ ...prev, image: compressedDataUrl }));
+      showToast('Gambar proyek berhasil diunggah!');
     }
   };
 
   const handleCvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert('Ukuran file CV terlalu besar. Maksimal 10MB.');
-        return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('File CV berukuran cukup besar. Untuk mencegah error penyimpanan, disarankan menggunakan link Google Drive pada Metode 2.');
       }
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -127,7 +160,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   // Handlers for Personal Info
   const handleSavePersonal = (e: React.FormEvent) => {
     e.preventDefault();
-    updatePersonalInfo(personalForm);
+    const rolesArr = subRolesInput.split(',').map(r => r.trim()).filter(Boolean);
+    const updatedInfo = {
+      ...personalForm,
+      subRoles: rolesArr,
+      roles: rolesArr
+    };
+    updatePersonalInfo(updatedInfo as any);
     showToast('Informasi profil berhasil diperbarui!');
   };
 
@@ -161,6 +200,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     const formattedLiveDemo = ensureProtocol(projForm.liveDemoUrl || (projForm as any).liveUrl);
     const formattedGithub = ensureProtocol(projForm.githubUrl);
+    const parsedTags = projTagsInput ? projTagsInput.split(',').map(t => t.trim()).filter(Boolean) : (projForm.tags || []);
 
     const projToSave: ProjectItem = {
       ...projForm,
@@ -170,6 +210,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       longDescription: projForm.longDescription || projForm.description || projForm.shortDescription || '',
       liveDemoUrl: formattedLiveDemo,
       githubUrl: formattedGithub,
+      tags: parsedTags,
       date: projForm.date || new Date().getFullYear().toString(),
       highlights: projForm.highlights || []
     };
@@ -182,6 +223,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       showToast('Proyek baru berhasil ditambahkan!');
     }
     setEditingProjId(null);
+    setProjTagsInput('');
     setProjForm({
       id: '', title: '', shortDescription: '', description: '', longDescription: '',
       image: '', category: 'Web App', tags: [], featured: false,
@@ -192,8 +234,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   // Experience Handlers
   const handleSaveExperience = (e: React.FormEvent) => {
     e.preventDefault();
+    const parsedAchievements = achievementsInput ? achievementsInput.split('\n').filter(Boolean) : (expForm.achievements || []);
     const expToSave = {
       ...expForm,
+      achievements: parsedAchievements,
       id: expForm.id || `exp-${Date.now()}`
     };
 
@@ -205,6 +249,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       showToast('Pengalaman baru ditambahkan!');
     }
     setEditingExpId(null);
+    setAchievementsInput('');
     setExpForm({ id: '', company: '', role: '', period: '', location: '', description: '', achievements: [] });
   };
 
@@ -577,7 +622,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                       <input
                         type="url"
                         placeholder="https://drive.google.com/file/d/1ABC.../view?usp=sharing"
-                        value={personalForm.cvUrl?.startsWith('http') ? personalForm.cvUrl : ''}
+                        value={personalForm.cvUrl && !personalForm.cvUrl.startsWith('data:') ? personalForm.cvUrl : ''}
                         onChange={(e) => {
                           const val = e.target.value;
                           setPersonalForm({
@@ -626,16 +671,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   </label>
                   <input
                     type="text"
-                    value={personalForm.subRoles ? personalForm.subRoles.join(', ') : ((personalForm as any).roles ? (personalForm as any).roles.join(', ') : '')}
-                    onChange={(e) => {
-                      const rolesArr = e.target.value.split(',').map(r => r.trim()).filter(Boolean);
-                      setPersonalForm({ 
-                        ...personalForm, 
-                        subRoles: rolesArr,
-                        roles: rolesArr 
-                      } as any);
-                    }}
-                    placeholder="Full Stack Developer, UI/UX Designer, Open Source Contributor"
+                    value={subRolesInput}
+                    onChange={(e) => setSubRolesInput(e.target.value)}
+                    placeholder="Siswa SMK RPL, Junior Web Developer, UI/UX Enthusiast"
                     className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm"
                   />
                 </div>
@@ -972,11 +1010,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                       <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Tech Stack (Pisahkan dengan koma)</label>
                       <input
                         type="text"
-                        value={projForm.tags.join(', ')}
-                        onChange={(e) => setProjForm({ 
-                          ...projForm, 
-                          tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) 
-                        })}
+                        value={projTagsInput}
+                        onChange={(e) => setProjTagsInput(e.target.value)}
                         placeholder="React, Tailwind, Node.js"
                         className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm"
                       />
@@ -1042,6 +1077,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={() => {
                           setEditingProjId(null);
+                          setProjTagsInput('');
                           setProjForm({
                             id: '', title: '', shortDescription: '', description: '', longDescription: '',
                             image: '', category: 'Web App', tags: [], featured: false,
@@ -1077,6 +1113,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                             <button
                               onClick={() => {
                                 setEditingProjId(proj.id);
+                                setProjTagsInput(proj.tags ? proj.tags.join(', ') : '');
                                 setProjForm({
                                   ...proj,
                                   liveDemoUrl: proj.liveDemoUrl || (proj as any).liveUrl || '',
@@ -1204,11 +1241,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Pencapaian Utama (Pisahkan per baris)</label>
                     <textarea
                       rows={3}
-                      value={expForm.achievements ? expForm.achievements.join('\n') : ''}
-                      onChange={(e) => setExpForm({ 
-                        ...expForm, 
-                        achievements: e.target.value.split('\n').filter(Boolean)
-                      })}
+                      value={achievementsInput}
+                      onChange={(e) => setAchievementsInput(e.target.value)}
                       placeholder="Meningkatkan kecepatan website sebesar 40%&#10;Memimpin tim 5 orang developer"
                       className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm"
                     />
@@ -1227,6 +1261,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={() => {
                           setEditingExpId(null);
+                          setAchievementsInput('');
                           setExpForm({ id: '', company: '', role: '', period: '', location: '', description: '', achievements: [] });
                         }}
                         className="px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-medium"
@@ -1261,6 +1296,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                           onClick={() => {
                             setEditingExpId(exp.id);
                             setExpForm(exp);
+                            setAchievementsInput(exp.achievements ? exp.achievements.join('\n') : '');
                           }}
                           className="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg"
                         >
