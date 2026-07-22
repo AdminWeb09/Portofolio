@@ -49,11 +49,17 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               {personalInfo.cvUrl && (
                 <a
                   href={personalInfo.cvUrl}
-                  download={personalInfo.cvFileName || `${personalInfo.name.replace(/\s+/g, '_')}_CV.pdf`}
+                  target={personalInfo.cvUrl.startsWith('http') ? '_blank' : undefined}
+                  rel={personalInfo.cvUrl.startsWith('http') ? 'noreferrer' : undefined}
+                  download={!personalInfo.cvUrl.startsWith('http') ? (personalInfo.cvFileName || `${personalInfo.name.replace(/\s+/g, '_')}_CV.pdf`) : undefined}
                   className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Unduh File CV ({personalInfo.cvFileName || 'Dokumen Asli'})</span>
+                  <span>
+                    {personalInfo.cvUrl.includes('drive.google.com')
+                      ? 'Buka CV di Google Drive'
+                      : `Unduh / Buka CV (${personalInfo.cvFileName || 'Dokumen Asli'})`}
+                  </span>
                 </a>
               )}
               <button

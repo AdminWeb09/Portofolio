@@ -472,55 +472,108 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Dokumen CV / Resume Saya
                   </label>
-                  <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-4">
-                    <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0">
-                      <FileText className="w-8 h-8" />
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                    
+                    {/* Status Display */}
+                    <div className="flex items-center gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800">
+                      <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0">
+                        <FileText className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                          {personalForm.cvFileName 
+                            ? personalForm.cvFileName 
+                            : personalForm.cvUrl 
+                              ? (personalForm.cvUrl.includes('drive.google.com') ? 'Google Drive Link CV' : 'Dokumen CV Terhubung')
+                              : 'Belum Ada File / Link CV'}
+                        </h4>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                          {personalForm.cvUrl 
+                            ? (personalForm.cvUrl.startsWith('data:') ? 'Terunggah sebagai file lokal' : personalForm.cvUrl)
+                            : 'Pilih file dari perangkat ATAU gunakan link Google Drive.'}
+                        </p>
+                      </div>
+                      {personalForm.cvUrl && (
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={personalForm.cvUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition-colors text-xs font-semibold flex items-center gap-1"
+                            title="Buka / Cek CV"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            <span className="hidden sm:inline">Cek Link</span>
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => setPersonalForm({ ...personalForm, cvUrl: '', cvFileName: '' })}
+                            className="p-2 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-xs font-semibold"
+                            title="Hapus CV"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
 
-                    <div className="flex-1 text-center sm:text-left space-y-1">
-                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                        {personalForm.cvFileName ? personalForm.cvFileName : 'Belum Ada File CV Khusus Terunggah'}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {personalForm.cvUrl 
-                          ? 'File CV Anda siap diunduh oleh pengunjung portfolio.'
-                          : 'Pilih file CV asli Anda (PDF / Doc / Gambar) langsung dari HP atau komputer.'}
+                    {/* Method 1: Upload Manual */}
+                    <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+                      <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                        Metode 1: Unggah File dari HP / Komputer
                       </p>
+                      <label className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-sm">
+                        <Upload className="w-4 h-4" />
+                        <span>Pilih File CV (PDF / Doc / Gambar)</span>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,image/*"
+                          onChange={handleCvFileChange}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
 
-                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2">
-                        <label className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-sm flex items-center gap-2">
-                          <Upload className="w-4 h-4" />
-                          <span>{personalForm.cvUrl ? 'Ganti File CV Saya' : 'Unggah File CV Saya'}</span>
-                          <input
-                            type="file"
-                            accept=".pdf,.doc,.docx,image/*"
-                            onChange={handleCvFileChange}
-                            className="hidden"
-                          />
-                        </label>
+                    {/* Method 2: Google Drive Link */}
+                    <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/60 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                          Metode 2: Tempel Link Google Drive
+                        </p>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold">
+                          Google Drive
+                        </span>
+                      </div>
+                      <input
+                        type="url"
+                        placeholder="https://drive.google.com/file/d/1ABC.../view?usp=sharing"
+                        value={personalForm.cvUrl?.startsWith('http') ? personalForm.cvUrl : ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setPersonalForm({
+                            ...personalForm,
+                            cvUrl: val,
+                            cvFileName: val.includes('drive.google.com') ? 'Google Drive CV Document' : (personalForm.cvFileName || 'Link CV Online')
+                          });
+                        }}
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono"
+                      />
 
-                        {personalForm.cvUrl && (
-                          <>
-                            <a
-                              href={personalForm.cvUrl}
-                              download={personalForm.cvFileName || 'CV_Saya.pdf'}
-                              className="px-3 py-2.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 rounded-xl transition-colors border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5"
-                            >
-                              <Download className="w-3.5 h-3.5" />
-                              <span>Unduh / Cek File</span>
-                            </a>
-
-                            <button
-                              type="button"
-                              onClick={() => setPersonalForm({ ...personalForm, cvUrl: '', cvFileName: '' })}
-                              className="px-3 py-2.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors border border-rose-200 dark:border-rose-900/50"
-                            >
-                              Hapus CV
-                            </button>
-                          </>
-                        )}
+                      {/* Google Drive Tip Box */}
+                      <div className="p-3 bg-blue-50/80 dark:bg-blue-950/30 rounded-xl border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-900 dark:text-blue-200 space-y-1">
+                        <p className="font-bold flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                          <span>Cara Mengambil Link Google Drive:</span>
+                        </p>
+                        <ol className="list-decimal list-inside space-y-0.5 opacity-90 pl-1">
+                          <li>Buka file CV Anda di Google Drive.</li>
+                          <li>Klik tombol <span className="font-semibold">"Bagikan" (Share)</span> di sudut kanan atas.</li>
+                          <li>Ubah Akses Umum menjadi <span className="font-bold underline">"Siapa saja yang memiliki link"</span>.</li>
+                          <li>Klik <span className="font-semibold">"Salin Link"</span> lalu tempel pada kolom di atas.</li>
+                        </ol>
                       </div>
                     </div>
+
                   </div>
                 </div>
 
